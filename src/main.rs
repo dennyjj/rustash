@@ -2,11 +2,8 @@ mod config;
 mod utils;
 
 use config::Config;
-use dirs;
 use std::env;
-use std::fs::File;
 use std::io::Write;
-use std::path::PathBuf;
 use utils::{create_file, get_json};
 
 fn main() {
