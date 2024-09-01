@@ -1,25 +1,37 @@
+mod config;
+mod utils;
+
+use config::Config;
 use dirs;
 use std::env;
 use std::fs::File;
 use std::io::Write;
 use std::path::PathBuf;
+use utils::{create_file, get_json};
 
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    if args.len() > 1 {
-        let input = &args[1];
-        println!("Input argument: {}", input);
+    let config = Config::new(&args).unwrap_or_else(|err| {
+        println!("problem parsing arguments: {}", err);
+        std::process::exit(1);
+    });
 
-        let home_dir = dirs::home_dir().expect("Could not find home directory");
-        let mut file_path = PathBuf::from(home_dir);
-        file_path.push(".rustash.json");
+    match config.command.as_str() {
+        "add" => {
+            let file_path = get_json();
+            let mut file = create_file(file_path);
 
-        let mut file = File::create(file_path).expect("Could not create file");
+            file.write_all(config.msg.unwrap().as_bytes())
+                .expect("could not write to file");
+        }
+        "clear" => {
+            let file_path = get_json();
+            let mut file = create_file(file_path);
 
-        file.write_all(input.as_bytes())
-            .expect("Could not write to file");
-    } else {
-        println!("No input argument provided");
+            file.write_all("".as_bytes())
+                .expect("could not write to file");
+        }
+        _ => println!("Invalid command"),
     }
 }
