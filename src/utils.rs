@@ -9,6 +9,10 @@ pub fn get_json() -> PathBuf {
     return file_path;
 }
 
+pub fn open_file(file_path: PathBuf) -> File {
+    return File::open(file_path).expect("could not open file");
+}
+
 pub fn create_file(file_path: PathBuf) -> File {
     return File::create(file_path).expect("could not create file");
 }

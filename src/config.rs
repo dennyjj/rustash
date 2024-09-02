@@ -1,12 +1,14 @@
 use std::fmt;
 
 pub struct Config {
-    pub command: String,
+    pub command: Command,
     pub msg: Option<String>,
 }
 
-enum Command {
+#[derive(Debug)]
+pub enum Command {
     Add,
+    List,
     Clear,
 }
 
@@ -14,6 +16,7 @@ impl fmt::Display for Command {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
             Command::Add => write!(f, "add"),
+            Command::List => write!(f, "list"),
             Command::Clear => write!(f, "clear"),
         }
     }
@@ -25,9 +28,17 @@ impl Config {
             return Err("not enough arguments");
         }
 
-        let command = args[1].clone();
-        if command == Command::Add.to_string() && args.len() < 3 {
-            return Err("provide a message for add command");
+        let command = match args[1].as_str() {
+            "add" => Command::Add,
+            "list" => Command::List,
+            "clear" => Command::Clear,
+            _ => return Err("invalid command, accepted commands: add, list, clear"),
+        };
+
+        if let Command::Add = command {
+            if args.len() < 3 {
+                return Err("provide a message for add command");
+            }
         }
 
         let msg = if args.len() > 2 {
