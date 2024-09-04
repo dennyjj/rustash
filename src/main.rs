@@ -32,9 +32,14 @@ fn main() {
             let file = open_file(file_path);
 
             let reader = io::BufReader::new(file);
+            let mut lines_found = false;
             for (index, line) in reader.lines().enumerate() {
                 let line = line.expect("could not read line");
-                println!("{}. {}", index, line);
+                println!("{}) {}", index, line);
+                lines_found = true;
+            }
+            if !lines_found {
+                println!("no notes yet...");
             }
         }
         Command::Clear => {
