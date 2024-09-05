@@ -1,3 +1,4 @@
+use std::error::Error;
 use std::fmt;
 
 pub struct Config {
@@ -26,9 +27,9 @@ impl fmt::Display for Command {
 }
 
 impl Config {
-    pub fn new(args: &[String]) -> Result<Config, &'static str> {
+    pub fn new(args: &[String]) -> Result<Config, Box<dyn Error>> {
         if args.len() < 2 {
-            return Err("not enough arguments");
+            return Err("not enough arguments".into());
         }
 
         let command = match args[1].as_str() {
@@ -43,12 +44,12 @@ impl Config {
                     Command::Show(None)
                 }
             }
-            _ => return Err("invalid command, accepted commands: add, list, clear, show"),
+            _ => return Err("invalid command, accepted commands: add, list, clear, show".into()),
         };
 
         if let Command::Add = command {
             if args.len() < 3 {
-                return Err("provide a message for add command");
+                return Err("provide a message for add command".into());
             }
         }
 
