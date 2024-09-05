@@ -5,11 +5,12 @@ pub struct Config {
     pub msg: Option<String>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum Command {
     Add,
     List,
     Clear,
+    Show(Option<usize>),
 }
 
 impl fmt::Display for Command {
@@ -18,6 +19,8 @@ impl fmt::Display for Command {
             Command::Add => write!(f, "add"),
             Command::List => write!(f, "list"),
             Command::Clear => write!(f, "clear"),
+            Command::Show(Some(index)) => write!(f, "show {}", index),
+            Command::Show(None) => write!(f, "show"),
         }
     }
 }
@@ -32,7 +35,15 @@ impl Config {
             "add" => Command::Add,
             "list" => Command::List,
             "clear" => Command::Clear,
-            _ => return Err("invalid command, accepted commands: add, list, clear"),
+            "show" => {
+                if args.len() > 2 {
+                    let index = args[2].parse::<usize>().map_err(|_| "invalid index")?;
+                    Command::Show(Some(index))
+                } else {
+                    Command::Show(None)
+                }
+            }
+            _ => return Err("invalid command, accepted commands: add, list, clear, show"),
         };
 
         if let Command::Add = command {
@@ -41,7 +52,7 @@ impl Config {
             }
         }
 
-        let msg = if args.len() > 2 {
+        let msg = if args.len() > 2 && command != Command::Show(None) {
             Some(args[2].clone())
         } else {
             None
