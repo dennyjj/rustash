@@ -12,14 +12,14 @@ cargo install rustash
 
 #### usage
 
-add note
+##### add note
 
 ```
 > rustash add hello
 > rustash add world
 ```
 
-list note
+##### list note
 
 ```
 > rustash list
@@ -27,7 +27,17 @@ list note
 1) world
 ```
 
-delete all notes
+##### show one note by index
+
+```
+> rustash show
+0) hello
+
+> rustash show 1
+1) world
+```
+
+##### delete all notes
 
 ```
 > rustash clear
