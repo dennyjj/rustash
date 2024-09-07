@@ -1,10 +1,12 @@
-use config::{Command, Config};
+use config::Config;
+use r#enum::Command;
 use std::env;
 use std::fs::{File, OpenOptions};
 use std::io::{self, BufRead, Read, Write};
 use utils::get_json;
 
 mod config;
+mod r#enum;
 mod utils;
 
 fn add_note_to_file(file: &mut File, config: &Config) {
