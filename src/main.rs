@@ -6,7 +6,9 @@ use config::Config;
 use r#enum::Command;
 use std::env;
 use std::fs::OpenOptions;
-use utils::{add_note_to_file, clear_notes, get_json, list_notes, show_note_at_index};
+use utils::{
+    add_note_to_file, clear_notes, get_json, list_notes, remove_note_at_index, show_note_at_index,
+};
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -28,6 +30,7 @@ fn main() {
         Command::Add => add_note_to_file(&mut file, &config),
         Command::List => list_notes(file),
         Command::Show(index) => show_note_at_index(file, index),
+        Command::Remove(index) => remove_note_at_index(&mut file, index),
         Command::Clear => clear_notes(&mut file),
     }
 }

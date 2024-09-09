@@ -5,6 +5,7 @@ pub enum Command {
     Add,
     List,
     Show(Option<usize>),
+    Remove(usize),
     Clear,
 }
 
@@ -15,6 +16,7 @@ impl fmt::Display for Command {
             Command::List => write!(f, "list"),
             Command::Show(Some(index)) => write!(f, "show {}", index),
             Command::Show(None) => write!(f, "show"),
+            Command::Remove(index) => write!(f, "remove {}", index),
             Command::Clear => write!(f, "clear"),
         }
     }

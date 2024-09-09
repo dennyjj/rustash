@@ -23,6 +23,14 @@ impl Config {
                     Command::Show(None)
                 }
             }
+            "remove" => {
+                if args.len() > 2 {
+                    let index = args[2].parse::<usize>().map_err(|_| "invalid index")?;
+                    Command::Remove(index)
+                } else {
+                    return Err("provide an index for remove command".into());
+                }
+            }
             "clear" => Command::Clear,
             _ => return Err("invalid command, accepted commands: add, list, clear, show".into()),
         };

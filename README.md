@@ -27,7 +27,7 @@ cargo install rustash
 1) world
 ```
 
-##### show one note by index
+##### show note by index
 
 ```sh
 # show first note by default if no index provided
@@ -36,6 +36,14 @@ cargo install rustash
 
 > rustash show 1
 1) world
+```
+
+#### remove note by index
+
+```sh
+> rustash remove 1
+> rustash list
+0) hello
 ```
 
 ##### delete all notes

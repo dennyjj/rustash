@@ -54,6 +54,24 @@ pub fn show_note_at_index(file: File, index: Option<usize>) {
     }
 }
 
+pub fn remove_note_at_index(file: &mut File, index: usize) {
+    let mut contents = String::new();
+    file.read_to_string(&mut contents)
+        .expect("could not read file");
+
+    let mut lines: Vec<String> = contents.lines().map(|line| line.to_string()).collect();
+
+    if index < lines.len() {
+        lines.remove(index);
+        file.set_len(0).expect("could not truncate file");
+        file.write_all(lines.join("\n").as_bytes())
+            .expect("could not write to file");
+        println!("note removed");
+    } else {
+        println!("note not found");
+    }
+}
+
 pub fn clear_notes(file: &mut File) {
     file.set_len(0).expect("could not truncate file");
 }
