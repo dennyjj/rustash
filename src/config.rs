@@ -40,7 +40,7 @@ impl Config {
         if args.len() < 2 {
             return Err("not enough arguments".into());
         }
-        let command = get_command(args);
+        let command = get_command(args).unwrap();
 
         if let Command::Add = command {
             if args.len() < 3 {
